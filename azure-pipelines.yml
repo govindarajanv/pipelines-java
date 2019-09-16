@@ -6,6 +6,9 @@
 trigger:
 - feature
 
+variables:
+- group: MyVariableGroup
+
 pool:
   vmImage: 'ubuntu-latest'
   
@@ -16,4 +19,4 @@ jobs:
 - job: Release
   dependsOn: Debug
   steps:
-  - script: echo hello from the Release build
+  - script: echo hello from the Release build for $(developer) $(team)
