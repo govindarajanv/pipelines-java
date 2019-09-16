@@ -8,8 +8,20 @@ trigger:
 
 pool:
   vmImage: 'ubuntu-latest'
-
+  
+variables:
+  MAVEN_CACHE_FOLDER: $(Pipeline.Workspace)/.m2/repository
+  MAVEN_OPTS: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
+  
 steps:
+- task: CacheBeta@0
+  inputs:
+    key: maven | **/pom.xml
+    path: $(MAVEN_CACHE_FOLDER)
+  displayName: Cache Maven local repo
+
+- script: mvn install -B -e
+
 - task: Maven@3
   inputs:
     mavenPomFile: 'pom.xml'
